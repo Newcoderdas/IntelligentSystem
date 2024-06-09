@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise Interface with Mathematical Keyboard</title>
+  <style>
+    /* Common styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+    input[type="text"],
+    textarea {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #28a745;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .feedback {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .upload-container {
+      border: 2px dashed #ced4da;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .upload-container:hover {
+      border-color: #6c757d;
+    }
+    .upload-container p {
+      margin: 0;
+      color: #6c757d;
+      font-size: 18px;
+    }
+    .keyboard {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr); /* Adjusted for additional keys */
+      gap: 5px;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .key {
+      padding: 15px;
+      text-align: center;
+      border: none;
+      border-radius: 5px;
+      background-color: #66bb6a;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .key:hover {
+      background-color: #4caf50;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="color: #28a745;">Exercise Practice Question</h2>
+    <input type="text" id="questionInput" value="{{ question }}" readonly>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea id="solutionTextarea" name="solution_text" placeholder="Manually solve the question..."></textarea>
+        <div class="upload-container" id="uploadContainer">
+            <label for="fileInput">
+                <p>Drag & drop or click here to upload an image of your handwritten solution</p>
+            </label>
+            <input type="file" id="fileInput" name="solution_image" accept="image/*">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    {% if feedback %}
+    <div id="feedback" class="feedback">{{ feedback }}</div>
+    {% endif %}
+</div>
+
+<div class="keyboard">
+    <div class="key" onclick="appendToSolution('+')">+</div>
+    <div class="key" onclick="appendToSolution('-')">-</div>
+    <div class="key" onclick="appendToSolution('*')">&times;</div>
+    <div class="key" onclick="appendToSolution('/')">&divide;</div>
+    <div class="key" onclick="appendToSolution('sqrt(')">&#x221A;</div>
+    <div class="key" onclick="appendToSolution('^2')">x&#xB2;</div>
+    <div class="key" onclick="appendToSolution('^3')">x&#xB3;</div>
+    <div class="key" onclick="appendToSolution('^')">^</div>
+    <div class="key" onclick="appendToSolution('pi')">π</div>
+    <div class="key" onclick="appendToSolution('theta')">θ</div>
+    <div class="key" onclick="appendToSolution('alpha')">α</div>
+    <div class="key" onclick="appendToSolution('beta')">β</div>
+    <div class="key" onclick="appendToSolution('Infinity')">∞</div>
+    <div class="key" onclick="appendToSolution('sum')">Σ</div>
+    <div class="key" onclick="appendToSolution('product')">Π</div>
+    <div class="key" onclick="appendToSolution('int')">∫</div>
+    <div class="key" onclick="appendToSolution('sqrt(')">√</div>
+    <div class="key" onclick="appendToSolution('delta')">Δ</div>
+    <div class="key" onclick="appendToSolution('omega')">Ω</div>
+    <div class="key" onclick="appendToSolution('&lt;')"> &lt; </div>
+    <div class="key" onclick="appendToSolution('&gt;')"> &gt; </div>
+    <div class="key" onclick="appendToSolution('&le;')"> &le; </div>
+    <div class="key" onclick="appendToSolution('&ge;')"> &ge; </div>
+    <div class="key" onclick="appendToSolution('&ne;')"> &ne; </div>
+    <div class="key" onclick="appendToSolution('&asymp;')"> &asymp; </div>
+    <div class="key" onclick="appendToSolution('d/dx')">d/dx</div>
+    <div class="key" onclick="appendToSolution('∫')">∫</div>
+    <div class="key" onclick="appendToSolution('∮')">∮</div>
+    <div class="key" onclick="appendToSolution('∬')">∬</div>
+    <div class="key" onclick="appendToSolution('∭')">∭</div>
+    <div class="key" onclick="appendToSolution('=')">=</div>
+    <div class="key" onclick="appendToSolution('x')">x</div>
+    <div class="key" onclick="appendToSolution('sin(')">sin</div>
+    <div class="key" onclick="appendToSolution('cos(')">cos</div>
+    <div class="key" onclick="appendToSolution('tan(')">tan</div>
+    <div class="key" onclick="appendToSolution('cot(')">cot</div>
+    <div class="key" onclick="appendToSolution('sec(')">sec</div>
+    <div class="key" onclick="appendToSolution('csc(')">csc</div>
+    <div class="key" onclick="appendToSolution('ln(')">ln</div>
+    <div class="key" onclick="appendToSolution('log(')">log</div>
+    <div class="key" onclick="appendToSolution('sqrt(')">&#x221A;</div>
+    <div class="key" onclick="appendToSolution('pi')">π</div>
+    <div class="key" onclick="appendToSolution('theta')">θ</div>
+    <div class="key" onclick="appendToSolution('alpha')">α</div>
+    <div class="key" onclick="appendToSolution('beta')">β</div>
+    <div class="key" onclick="appendToSolution('gamma')">γ</div>
+    <div class="key" onclick="appendToSolution('delta')">δ</div>
+    <div class="key" onclick="appendToSolution('omega')">ω</div>
+    <div class="key" onclick="appendToSolution('sigma')">σ</div>
+    <div class="key" onclick="appendToSolution('mu')">μ</div>
+    <div class="key" onclick="appendToSolution('phi')">φ</div>
+</div>
+
+<script>
+// Function to append symbols to the solution textarea
+function appendToSolution(symbol) {
+    document.getElementById("solutionTextarea").value += symbol;
+}
+</script>
+
+</body>
+</html>
