@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <style>
+    /* Basic styles */
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #e0e0e0; /* Light gray background */
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 400px; /* Limit container width */
+    }
+
+    /* Form styles */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px; /* Spacing between form elements */
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      width: 100%;
+    }
+
+    form input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    form input[type="submit"]:hover {
+      background-color: #3e8e41;
+    }
+
+    .form-message {
+      color: red;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Register</h2>
+  <form action="#" method="post">
+    {% csrf_token %}
+    <div class="form-message"></div>  <label for="fullname">Full Name:</label>
+    <input type="text" name="fullname" id="fullname" placeholder="Enter your full name" required>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" placeholder="Enter your email address" required>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" placeholder="Enter your password" required>
+    <label for="confirm_password">Confirm Password:</label>
+    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm your password" required>
+    <input type="submit" value="Register">
+  </form>
+  <div class="login-link">
+    Already have an account? <a href="Login.html">Login</a>
+  </div>
+</div>
+
+</body>
+</html>
+ 
